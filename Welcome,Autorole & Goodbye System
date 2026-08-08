@@ -1,205 +1,253 @@
-trigger: (prefix)serversetting
-
+Trigger:
 (prefix)serversetting
+
 $nomention
-$c[Code made by Thunderz]
 $var[cross;❌]
-$var[tick;✅]
+$var[tick;✔️]
 $var[thunder;⚡]
-$var[arrow;➔]
+$var[arrow;▶]
 
 $onlyPerms[admin;$var[cross] You need **Administrator** permission to use this command!]
+
+$textSplit[$getServerVar[welcome_role_data];≈]
+$var[w_m_role;$splitText[1]]
+$var[w_b_role;$splitText[2]]
+
+$textSplit[$getServerVar[welcome_thumb_data];≈]
+$var[w_thumb_txt;$replaceText[$replaceText[$splitText[1];ON;$var[tick] Enabled];OFF;$var[cross] Disabled]]
+$var[w_t_url;$splitText[2]]
+
+$textSplit[$getServerVar[welcome_content_data];≈]
+$var[w_title;$splitText[1]]
+$var[w_msg;$splitText[2]]
+$var[w_foot;$splitText[3]]
+$var[w_col;$splitText[4]]
+
+$textSplit[$getServerVar[leave_thumb_data];≈]
+$var[l_thumb_txt;$replaceText[$replaceText[$splitText[1];ON;$var[tick] Enabled];OFF;$var[cross] Disabled]]
+$var[l_t_url;$splitText[2]]
+
+$textSplit[$getServerVar[leave_content_data];≈]
+$var[l_title;$splitText[1]]
+$var[l_msg;$splitText[2]]
+$var[l_foot;$splitText[3]]
+$var[l_col;$splitText[4]]
+
+$var[w_stat;$replaceText[$replaceText[$getServerVar[welcome_status];ON;$var[tick] Enabled];OFF;$var[cross] Disabled]]
+$var[w_chan;$getServerVar[welcome_channel]]
+
+$var[l_stat;$replaceText[$replaceText[$getServerVar[leave_status];ON;$var[tick] Enabled];OFF;$var[cross] Disabled]]
+$var[l_chan;$getServerVar[leave_channel]]
 
 $title[$var[thunder] MEMBER SYSTEM CONTROL PANEL]
 $description[
 **⚡ WELCOME SYSTEM**
-$var[arrow] **Status:** $replaceText[$replaceText[$getServerVar[welcome_status];ON;$var[tick] Enabled];OFF;$var[cross] Disabled]
-$var[arrow] **Channel:** <#$getServerVar[welcome_channel]>
-$var[arrow] **Autorole Member ID:** <@&$getServerVar[welcome_role]> ($getServerVar[welcome_role])
-$var[arrow] **Autorole Bot ID:** <@&$getServerVar[welcome_bot_role]> ($getServerVar[welcome_bot_role])
-$var[arrow] **Thumbnail Status:** $replaceText[$replaceText[$getServerVar[welcome_thumb_status];ON;$var[tick] Enabled];OFF;$var[cross] Disabled] (URL: $getServerVar[welcome_thumbnail])
-$var[arrow] **Title:** $getServerVar[welcome_title]
-$var[arrow] **Message (Des):** $getServerVar[welcome_message]
-$var[arrow] **Footer:** $getServerVar[welcome_footer] | **Color:** #$getServerVar[welcome_color]
+$var[arrow] **Status:** $var[w_stat]
+$var[arrow] **Channel:** <#$var[w_chan]>
+$var[arrow] **Autorole Member ID:** <@&$var[w_m_role]> ($var[w_m_role])
+$var[arrow] **Autorole Bot ID:** <@&$var[w_b_role]> ($var[w_b_role])
+$var[arrow] **Thumbnail Status:** $var[w_thumb_txt] (URL: $var[w_t_url])
+$var[arrow] **Title:** $var[w_title]
+$var[arrow] **Message (Des):** $var[w_msg]
+$var[arrow] **Footer:** $var[w_foot] | **Color:** #$var[w_col]
 
 **👋 GOODBYE SYSTEM**
-$var[arrow] **Status:** $replaceText[$replaceText[$getServerVar[leave_status];ON;$var[tick] Enabled];OFF;$var[cross] Disabled]
-$var[arrow] **Channel:** <#$getServerVar[leave_channel]>
-$var[arrow] **Thumbnail Status:** $replaceText[$replaceText[$getServerVar[leave_thumb_status];ON;$var[tick] Enabled];OFF;$var[cross] Disabled] (URL: $getServerVar[leave_thumbnail])
-$var[arrow] **Title:** $getServerVar[leave_title]
-$var[arrow] **Message (Des):** $getServerVar[leave_message]
-$var[arrow] **Footer:** $getServerVar[leave_footer] | **Color:** #$getServerVar[leave_color]
+$var[arrow] **Status:** $var[l_stat]
+$var[arrow] **Channel:** <#$var[l_chan]>
+$var[arrow] **Thumbnail Status:** $var[l_thumb_txt] (URL: $var[l_t_url])
+$var[arrow] **Title:** $var[l_title]
+$var[arrow] **Message (Des):** $var[l_msg]
+$var[arrow] **Footer:** $var[l_foot] | **Color:** #$var[l_col]
 ]
 $color[5865f2]
 
-$newSelectMenu[main_menu;1;1;Select a configuration to change...]
-$addSelectMenuOption[main_menu;• ⚡ Toggle Welcome;toggle_welcome_sys;Enable or disable welcome system]
-$addSelectMenuOption[main_menu;• 📌 Set Welcome Channel;set_welcome_channel;Select current channel]
+$newSelectMenu[main_menu;1;1;Select configuration to change...]
+$addSelectMenuOption[main_menu;• ⚡ Toggle Welcome System;toggle_welcome_sys;Toggle welcome system]
+$addSelectMenuOption[main_menu;• 📌 Set Welcome Channel;set_welcome_channel;Set current channel]
 $addSelectMenuOption[main_menu;• 👤 Set Member Autorole;set_welcome_member_role;Assign member role]
 $addSelectMenuOption[main_menu;• 🤖 Set Bot Autorole;set_welcome_bot_role;Assign bot role]
-$addSelectMenuOption[main_menu;• 🖼️ Toggle Welcome Thumb;toggle_welcome_thumbnail;Enable or disable welcome thumbnail]
-$addSelectMenuOption[main_menu;• ✏️ Edit Welcome Thumb URL;edit_welcome_thumbnail_url;Change welcome image link]
-$addSelectMenuOption[main_menu;• 📝 Edit Welcome Layout;edit_welcome_all_content;Modify Title, Des, Footer, Color]
-$addSelectMenuOption[main_menu;———————————————————————;none;Divider section;yes]
-$addSelectMenuOption[main_menu;• 👋 Toggle Goodbye;toggle_goodbye_sys;Enable or disable goodbye system]
-$addSelectMenuOption[main_menu;• 🚪 Set Goodbye Channel;set_goodbye_channel;Select current channel]
-$addSelectMenuOption[main_menu;• 🖼️ Toggle Goodbye Thumb;toggle_goodbye_thumbnail;Enable or disable goodbye thumbnail]
-$addSelectMenuOption[main_menu;• ✏️ Edit Goodbye Thumb URL;edit_goodbye_thumbnail_url;Change goodbye image link]
-$addSelectMenuOption[main_menu;• 📝 Edit Goodbye Layout;edit_goodbye_all_content;Modify Title, Des, Footer, Color Goodbye]
+$addSelectMenuOption[main_menu;• 🖼️ Toggle Welcome Thumbnail;toggle_welcome_thumbnail;Toggle welcome thumbnail]
+$addSelectMenuOption[main_menu;• ✏️ Edit Welcome Thumbnail URL;edit_welcome_thumbnail_url;Change thumbnail link]
+$addSelectMenuOption[main_menu;• 📝 Edit Welcome Content;edit_welcome_all_content;Edit Title, Des, Footer, Color]
+$addSelectMenuOption[main_menu;———————————————————————;none;Section separator]
+$addSelectMenuOption[main_menu;• 👋 Toggle Goodbye System;toggle_goodbye_sys;Toggle goodbye system]
+$addSelectMenuOption[main_menu;• 🚪 Set Goodbye Channel;set_goodbye_channel;Set current channel]
+$addSelectMenuOption[main_menu;• 🖼️ Toggle Goodbye Thumbnail;toggle_goodbye_thumbnail;Toggle goodbye thumbnail]
+$addSelectMenuOption[main_menu;• ✏️ Edit Goodbye Thumbnail URL;edit_goodbye_thumbnail_url;Change goodbye thumbnail link]
+$addSelectMenuOption[main_menu;• 📝 Edit Goodbye Content;edit_goodbye_all_content;Edit Title, Des, Footer, Color Goodbye]
 
 ——–—————–—————–—————–—————–—————–—————–—————–—————–—————–—————–—————–———
 
+Trigger:
 $onInteraction
 
 $nomention
-$c[Code made by Thunderz]
 $var[cross;❌]
-$var[tick;✅]
-$var[arrow;➔]
+$var[tick;✔️]
+$var[arrow;▶]
 
 $if[$customID==main_menu]
-  $if[$message==toggle_welcome_sys]
-    $if[$getServerVar[welcome_status]==ON]
-      $setServerVar[welcome_status;OFF]
-    $else
-      $setServerVar[welcome_status;ON]
-    $endif
-    $sendMessage[$var[tick] Welcome status has been changed to **$getServerVar[welcome_status]**!;no]
-  $elseif[$message==set_welcome_channel]
-    $setServerVar[welcome_channel;$channelID]
-    $sendMessage[$var[tick] Welcome channel has been set to <#$channelID>!;no]
-  $elseif[$message==set_welcome_member_role]
-    $newModal[mod_w_role;Setup Member Autorole]
-    $addTextInput[role_id;short;Enter Member Role ID;1;20;yes;$getServerVar[welcome_role]]
-  $elseif[$message==set_welcome_bot_role]
-    $newModal[mod_w_bot_role;Setup Bot Autorole]
-    $addTextInput[bot_role_id;short;Enter Bot Role ID;1;20;yes;$getServerVar[welcome_bot_role]]
-  $elseif[$message==toggle_welcome_thumbnail]
-    $if[$getServerVar[welcome_thumb_status]==ON]
-      $setServerVar[welcome_thumb_status;OFF]
-    $else
-      $setServerVar[welcome_thumb_status;ON]
-    $endif
-    $sendMessage[$var[tick] Welcome thumbnail status has been changed to **$getServerVar[welcome_thumb_status]**!;no]
-  $elseif[$message==edit_welcome_thumbnail_url]
-    $newModal[mod_w_thumb;Edit Welcome Thumb URL]
-    $addTextInput[url;short;Enter image link (or leave blank);0;200;no;$getServerVar[welcome_thumbnail]]
-  $elseif[$message==edit_welcome_all_content]
-    $newModal[mod_w_all;Edit Welcome Layout]
-    $addTextInput[w_title;short;Title;1;256;yes;$getServerVar[welcome_title]]
-    $addTextInput[w_msg;paragraph;Message Description;1;1000;yes;$getServerVar[welcome_message]]
-    $addTextInput[w_footer;short;Footer Text;1;100;yes;$getServerVar[welcome_footer]]
-    $addTextInput[w_color;short;Hex Color (No #);6;6;yes;$getServerVar[welcome_color]]
-  $elseif[$message==toggle_goodbye_sys]
-    $if[$getServerVar[leave_status]==ON]
-      $setServerVar[leave_status;OFF]
-    $else
-      $setServerVar[leave_status;ON]
-    $endif
-    $sendMessage[$var[tick] Goodbye status has been changed to **$getServerVar[leave_status]**!;no]
-  $elseif[$message==set_goodbye_channel]
-    $setServerVar[leave_channel;$channelID]
-    $sendMessage[$var[tick] Goodbye channel has been set to <#$channelID>!;no]
-  $elseif[$message==toggle_goodbye_thumbnail]
-    $if[$getServerVar[leave_thumb_status]==ON]
-      $setServerVar[leave_thumb_status;OFF]
-    $else
-      $setServerVar[leave_thumb_status;ON]
-    $endif
-    $sendMessage[$var[tick] Goodbye thumbnail status has been changed to **$getServerVar[leave_thumb_status]**!;no]
-  $elseif[$message==edit_goodbye_thumbnail_url]
-    $newModal[mod_l_thumb;Edit Goodbye Thumb URL]
-    $addTextInput[url;short;Enter image link (or leave blank);0;200;no;$getServerVar[leave_thumbnail]]
-  $elseif[$message==edit_goodbye_all_content]
-    $newModal[mod_l_all;Edit Goodbye Layout]
-    $addTextInput[l_title;short;Title;1;256;yes;$getServerVar[leave_title]]
-    $addTextInput[l_msg;paragraph;Message Description;1;1000;yes;$getServerVar[leave_message]]
-    $addTextInput[l_footer;short;Footer Text;1;100;yes;$getServerVar[leave_footer]]
-    $addTextInput[l_color;short;Hex Color (No #);6;6;yes;$getServerVar[leave_color]]
-  $endif
+$if[$message==toggle_welcome_sys]
+$if[$getServerVar[welcome_status]==ON]
+$setServerVar[welcome_status;OFF]
+$else
+$setServerVar[welcome_status;ON]
+$endif
+$sendMessage[$var[tick] Welcome status has been changed to **$getServerVar[welcome_status]**!;no]
+$elseif[$message==set_welcome_channel]
+$setServerVar[welcome_channel;$channelID]
+$sendMessage[$var[tick] Welcome channel has been set to <#$channelID>!;no]
+$elseif[$message==set_welcome_member_role]
+$textSplit[$getServerVar[welcome_role_data];≈]
+$newModal[mod_w_role;Set Member Autorole]
+$addTextInput[role_id;short;Enter Member Role ID;1;20;yes;$splitText[1]]
+$elseif[$message==set_welcome_bot_role]
+$textSplit[$getServerVar[welcome_role_data];≈]
+$newModal[mod_w_bot_role;Set Bot Autorole]
+$addTextInput[bot_role_id;short;Enter Bot Role ID;1;20;yes;$splitText[2]]
+$elseif[$message==toggle_welcome_thumbnail]
+$textSplit[$getServerVar[welcome_thumb_data];≈]
+$if[$splitText[1]==ON]
+$setServerVar[welcome_thumb_data;OFF≈$splitText[2]]
+$sendMessage[$var[tick] Welcome thumbnail has been turned **OFF**!;no]
+$else
+$setServerVar[welcome_thumb_data;ON≈$splitText[2]]
+$sendMessage[$var[tick] Welcome thumbnail has been turned **ON**!;no]
+$endif
+$elseif[$message==edit_welcome_thumbnail_url]
+$textSplit[$getServerVar[welcome_thumb_data];≈]
+$newModal[mod_w_thumb;Edit Welcome Thumbnail URL]
+$addTextInput[url;short;Enter image link (or leave blank);0;200;no;$splitText[2]]
+$elseif[$message==edit_welcome_all_content]
+$textSplit[$getServerVar[welcome_content_data];≈]
+$newModal[mod_w_all;Edit Welcome Content]
+$addTextInput[w_title;short;Title;1;256;yes;$splitText[1]]
+$addTextInput[w_msg;paragraph;Message Description;1;1000;yes;$splitText[2]]
+$addTextInput[w_footer;short;Footer Text;1;100;yes;$splitText[3]]
+$addTextInput[w_color;short;Hex Color (No #);6;6;yes;$splitText[4]]
+$elseif[$message==toggle_goodbye_sys]
+$if[$getServerVar[leave_status]==ON]
+$setServerVar[leave_status;OFF]
+$else
+$setServerVar[leave_status;ON]
+$endif
+$sendMessage[$var[tick] Goodbye status has been changed to **$getServerVar[leave_status]**!;no]
+$elseif[$message==set_goodbye_channel]
+$setServerVar[leave_channel;$channelID]
+$sendMessage[$var[tick] Goodbye channel has been set to <#$channelID>!;no]
+$elseif[$message==toggle_goodbye_thumbnail]
+$textSplit[$getServerVar[leave_thumb_data];≈]
+$if[$splitText[1]==ON]
+$setServerVar[leave_thumb_data;OFF≈$splitText[2]]
+$sendMessage[$var[tick] Goodbye thumbnail has been turned **OFF**!;no]
+$else
+$setServerVar[leave_thumb_data;ON≈$splitText[2]]
+$sendMessage[$var[tick] Goodbye thumbnail has been turned **ON**!;no]
+$endif
+$elseif[$message==edit_goodbye_thumbnail_url]
+$textSplit[$getServerVar[leave_thumb_data];≈]
+$newModal[mod_l_thumb;Edit Goodbye Thumbnail URL]
+$addTextInput[url;short;Enter image link (or leave blank);0;200;no;$splitText[2]]
+$elseif[$message==edit_goodbye_all_content]
+$textSplit[$getServerVar[leave_content_data];≈]
+$newModal[mod_l_all;Edit Goodbye Content]
+$addTextInput[l_title;short;Title;1;256;yes;$splitText[1]]
+$addTextInput[l_msg;paragraph;Message Description;1;1000;yes;$splitText[2]]
+$addTextInput[l_footer;short;Footer Text;1;100;yes;$splitText[3]]
+$addTextInput[l_color;short;Hex Color (No #);6;6;yes;$splitText[4]]
+$endif
 $elseif[$customID==mod_w_role]
-  $setServerVar[welcome_role;$input[role_id]]
-  $sendMessage[$var[tick] Member role successfully saved!;no]
+$textSplit[$getServerVar[welcome_role_data];≈]
+$setServerVar[welcome_role_data;$input[role_id]≈$splitText[2]]
+$sendMessage[$var[tick] Member role saved successfully!;no]
 $elseif[$customID==mod_w_bot_role]
-  $setServerVar[welcome_bot_role;$input[bot_role_id]]
-  $sendMessage[$var[tick] Bot role successfully saved!;no]
+$textSplit[$getServerVar[welcome_role_data];≈]
+$setServerVar[welcome_role_data;$splitText[1]≈$input[bot_role_id]]
+$sendMessage[$var[tick] Bot role saved successfully!;no]
 $elseif[$customID==mod_w_thumb]
-  $setServerVar[welcome_thumbnail;$input[url]]
-  $sendMessage[$var[tick] Welcome thumbnail URL successfully saved!;no]
+$textSplit[$getServerVar[welcome_thumb_data];≈]
+$setServerVar[welcome_thumb_data;$splitText[1]≈$input[url]]
+$sendMessage[$var[tick] Welcome thumbnail URL saved successfully!;no]
 $elseif[$customID==mod_w_all]
-  $setServerVar[welcome_title;$input[w_title]]
-  $setServerVar[welcome_message;$input[w_msg]]
-  $setServerVar[welcome_footer;$input[w_footer]]
-  $setServerVar[welcome_color;$input[w_color]]
-  $sendMessage[$var[tick] Welcome layout successfully updated!;no]
+$setServerVar[welcome_content_data;$input[w_title]≈$input[w_msg]≈$input[w_footer]≈$input[w_color]]
+$sendMessage[$var[tick] Welcome content updated successfully!;no]
 $elseif[$customID==mod_l_thumb]
-  $setServerVar[leave_thumbnail;$input[url]]
-  $sendMessage[$var[tick] Goodbye thumbnail URL successfully saved!;no]
+$textSplit[$getServerVar[leave_thumb_data];≈]
+$setServerVar[leave_thumb_data;$splitText[1]≈$input[url]]
+$sendMessage[$var[tick] Goodbye thumbnail URL saved successfully!;no]
 $elseif[$customID==mod_l_all]
-  $setServerVar[leave_title;$input[l_title]]
-  $setServerVar[leave_message;$input[l_msg]]
-  $setServerVar[leave_footer;$input[l_footer]]
-  $setServerVar[leave_color;$input[l_color]]
-  $sendMessage[$var[tick] Goodbye layout successfully updated!;no]
+$setServerVar[leave_content_data;$input[l_title]≈$input[l_msg]≈$input[l_footer]≈$input[l_color]]
+$sendMessage[$var[tick] Goodbye content updated successfully!;no]
 $endif
 
 ——–—————–—————–—————–—————–—————–—————–—————–—————–—————–—————–—————–———
 
+Trigger:
 $onJoined[$getServerVar[welcome_channel;$guildID]]
 
 $nomention
-$c[Code made by Thunderz]
+
+$textSplit[$getServerVar[welcome_role_data];≈]
+$var[w_member_role;$splitText[1]]
+$var[w_bot_role;$splitText[2]]
+
 $if[$isBot[$authorID]==true]
-  $if[$getServerVar[welcome_bot_role]!=none]
-    $if[$getServerVar[welcome_bot_role]!=]
-      $giveRole[$authorID;$getServerVar[welcome_bot_role]]
-    $endif
-  $endif
+$if[$var[w_bot_role]!=0]
+$if[$var[w_bot_role]!=]
+$giveRole[$authorID;$var[w_bot_role]]
+$endif
+$endif
 $else
-  $if[$getServerVar[welcome_role]!=none]
-    $if[$getServerVar[welcome_role]!=]
-      $giveRole[$authorID;$getServerVar[welcome_role]]
-    $endif
-  $endif
+$if[$var[w_member_role]!=0]
+$if[$var[w_member_role]!=]
+$giveRole[$authorID;$var[w_member_role]]
+$endif
+$endif
 $endif
 
 $if[$getServerVar[welcome_status]==ON]
-  $useChannel[$getServerVar[welcome_channel]]
-  $title[$getServerVar[welcome_title]]
-  $description[$replaceText[$replaceText[$replaceText[$getServerVar[welcome_message];{user};<@$authorID>];{count};$membersCount];{server};$serverName[$guildID]]]
-  $footer[$getServerVar[welcome_footer]]
-  $color[#$getServerVar[welcome_color]]
-  
-  $if[$getServerVar[welcome_thumb_status]==ON]
-    $if[$getServerVar[welcome_thumbnail]==none]
-      $thumbnail[$authorAvatar]
-    $elseif[$getServerVar[welcome_thumbnail]==]
-      $thumbnail[$authorAvatar]
-    $else
-      $thumbnail[$getServerVar[welcome_thumbnail]]
-    $endif
-  $endif
+$textSplit[$getServerVar[welcome_content_data];≈]
+$useChannel[$getServerVar[welcome_channel]]
+$title[$splitText[1]]
+$description[$replaceText[$replaceText[$replaceText[$splitText[2];{user};<@$authorID>];{count};$membersCount];{server};$serverName[$guildID]]]
+$footer[$splitText[3]]
+$color[$splitText[4]]
+
+$textSplit[$getServerVar[welcome_thumb_data];≈]
+$if[$splitText[1]==ON]
+$if[$splitText[2]==none]
+$thumbnail[$authorAvatar]
+$elseif[$splitText[2]==]
+$thumbnail[$authorAvatar]
+$else
+$thumbnail[$splitText[2]]
+$endif
+$endif
 $endif
 
 ——–—————–—————–—————–—————–—————–—————–—————–—————–—————–—————–—————–———
 
+Trigger:
 $onLeave[$getServerVar[leave_channel;$guildID]]
 
 $nomention
-$c[Code made by Thunderz]
+
 $if[$getServerVar[leave_status]==ON]
-  $useChannel[$getServerVar[leave_channel]]
-  $title[$getServerVar[leave_title]]
-  $description[$replaceText[$replaceText[$replaceText[$getServerVar[leave_message];{user};<@$authorID>];{count};$membersCount];{server};$serverName[$guildID]]]
-  $color[#$getServerVar[leave_color]]
-  
-  $if[$getServerVar[leave_thumb_status]==ON]
-    $if[$getServerVar[leave_thumbnail]==none]
-      $thumbnail[$authorAvatar]
-    $elseif[$getServerVar[leave_thumbnail]==]
-      $thumbnail[$authorAvatar]
-    $else
-      $thumbnail[$getServerVar[leave_thumbnail]]
-    $endif
-  $endif
+$textSplit[$getServerVar[leave_content_data];≈]
+$useChannel[$getServerVar[leave_channel]]
+$title[$splitText[1]]
+$description[$replaceText[$replaceText[$replaceText[$splitText[2];{user};<@$authorID>];{count};$membersCount];{server};$serverName[$guildID]]]
+$footer[$splitText[3]]
+$color[$splitText[4]]
+
+$textSplit[$getServerVar[leave_thumb_data];≈]
+$if[$splitText[1]==ON]
+$if[$splitText[2]==none]
+$thumbnail[$authorAvatar]
+$elseif[$splitText[2]==]
+$thumbnail[$authorAvatar]
+$else
+$thumbnail[$splitText[2]]
+$endif
+$endif
 $endif
