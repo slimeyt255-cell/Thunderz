@@ -8,39 +8,39 @@ import os
 from dotenv import load_dotenv
 import json
 
-# Cargar variables de entorno desde el archivo .env
+# Nạp các biến môi trường từ file .env
 load_dotenv()
 
 class MusicBot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix="!", intents=discord.Intents().all())
         self.voice_client = None
-        self.music_queue = []  # Cola para almacenar las URLs de música
-        self.is_playing = False  # Indicador de estado de reproducción
+        self.music_queue = []  # Hàng đợi lưu các URL nhạc
+        self.is_playing = False  # Cờ đánh dấu trạng thái đang phát
     
 
 
     async def play_music(self, user_id, channel_id, guild_id, query):
 
         try:
-            print(f"Buscando audio para la consulta: {query}")
+            print(f"Đang tìm audio cho truy vấn: {query}")
             guild = self.get_guild(int(guild_id))
             if guild is None:
-                print("No se pudo encontrar el servidor.")
-                return "El bot no está en el servidor especificado."
+                print("Không tìm thấy server.")
+                return "Bot không có trong server được chỉ định."
             
 
             member = guild.get_member(int(user_id))
             if member is None:
-                print("El usuario no se encuentra en el servidor.")
-                return "El usuario no se encuentra en el servidor."
+                print("Người dùng không có trong server.")
+                return "Người dùng không có trong server."
 
-            # Verifica si el usuario está en un canal de voz
+            # Kiểm tra xem người dùng có đang trong kênh thoại không
             if member.voice is None or member.voice.channel.id != int(channel_id):
-                print("El usuario no está en el canal de voz correcto.")
-                return f"El usuario {user_id} no está en el canal de voz correcto."
+                print("Người dùng không ở đúng kênh thoại.")
+                return f"Người dùng {user_id} không ở đúng kênh thoại."
 
-            # Busca el audio de YouTube basado en la consulta
+            # Tìm audio YouTube dựa trên truy vấn
             extract = search_youtube(query)
 
             results = YoutubeSearch(extract, max_results=1).to_json()
@@ -54,47 +54,47 @@ class MusicBot(commands.Bot):
             url = get_youtube_audio_url(extract)
 
             if not url:
-                raise ValueError("No se pudo obtener la URL del audio.")
+                raise ValueError("Không lấy được URL audio.")
 
-            # Agrega la URL a la cola de música
+            # Thêm URL vào hàng đợi nhạc
             self.music_queue.append(url)
-            print(f"Agregada a la cola: {url}. Cola actual: {self.music_queue}")
+            print(f"Đã thêm vào hàng đợi: {url}. Hàng đợi hiện tại: {self.music_queue}")
 
-            # Si el bot no está reproduciendo, comienza a reproducir
+            # Nếu bot chưa phát nhạc, bắt đầu phát
             if self.voice_client is None:
-                # Conectar al canal de voz
+                # Kết nối tới kênh thoại
                 self.voice_client = await member.voice.channel.connect()
 
-            # Iniciar la reproducción si no hay música sonando
+            # Bắt đầu phát nếu chưa có nhạc nào đang phát
             if not self.is_playing:
-                asyncio.create_task(self.start_playing())  # Reproducción en segundo plano
+                asyncio.create_task(self.start_playing())  # Phát nhạc ở chế độ nền
 
-            # Enviar respuesta JSON inmediatamente
+            # Gửi phản hồi JSON ngay lập tức
             
-            return {"status": "success", "message": "Canción agregada a la cola", "queue": self.music_queue, "info_music": data_url}
+            return {"status": "success", "message": "Đã thêm bài hát vào hàng đợi", "queue": self.music_queue, "info_music": data_url}
 
         except Exception as e:
-            print(f"Error al reproducir música: {e}")
+            print(f"Lỗi khi phát nhạc: {e}")
             return {"status": "error", "message": str(e)}
 
     async def start_playing(self):
-        # Maneja la reproducción de música en cola
+        # Xử lý phát nhạc trong hàng đợi
         while self.music_queue:
-            url = self.music_queue.pop(0)  # Obtiene la siguiente URL de la cola
+            url = self.music_queue.pop(0)  # Lấy URL tiếp theo trong hàng đợi
 
-            # Opciones de FFmpeg mejoradas
+            # Các tuỳ chọn FFmpeg đã được cải thiện
             ffmpeg_options = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
                               'options': '-vn -loglevel panic'}
 
             self.is_playing = True
-            # Reproducir el audio
+            # Phát audio
             self.voice_client.play(discord.FFmpegPCMAudio(url, **ffmpeg_options), after=self.check_queue)
 
-            # Espera hasta que termine la reproducción
+            # Đợi cho đến khi phát xong
             while self.voice_client.is_playing():
                 await asyncio.sleep(1)
 
-        # Desconectar después de que se haya terminado la cola
+        # Ngắt kết nối sau khi hết hàng đợi
         if self.voice_client:
             await self.voice_client.disconnect()
             self.voice_client = None
@@ -102,18 +102,18 @@ class MusicBot(commands.Bot):
 
     def check_queue(self, error=None):
         if error:
-            print(f"Error en la reproducción: {error}")
-        # Llama a start_playing para reproducir la siguiente canción en la cola
+            print(f"Lỗi khi phát: {error}")
+        # Gọi start_playing để phát bài tiếp theo trong hàng đợi
         if self.music_queue:
             asyncio.create_task(self.start_playing())
 
     async def show_queue(self):
-        return self.music_queue  # Devuelve la cola actual
+        return self.music_queue  # Trả về hàng đợi hiện tại
 
     async def on_ready(self):
-        print(f"Bot conectado como {self.user} en el servidor.")
+        print(f"Bot đã kết nối với tên {self.user} trên server.")
 
     async def start_bot(self):
-        # Inicia el bot
+        # Khởi động bot
         TOKEN = os.getenv("DISCORD_TOKEN")
         await self.start(TOKEN)
