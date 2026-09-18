@@ -8,12 +8,4 @@ def search_youtube(query):
     if data["videos"]:
         video_id = data["videos"][0]["id"]
         return f"https://www.youtube.com/watch?v={video_id}"
-    return None  # Retorna None si no hay resultados
-
-
-
-
-
-
-
-
+    return None  # Trả về None nếu không có kết quả
