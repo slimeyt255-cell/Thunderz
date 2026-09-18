@@ -23,6 +23,11 @@ class MusicBot(commands.Bot):
     async def play_music(self, user_id, channel_id, guild_id, query):
 
         try:
+            # Đợi bot kết nối gateway và tải xong danh sách server trước khi kiểm tra
+            # (tránh lỗi báo "bot không ở trong server" khi request tới ngay lúc
+            # bot vừa khởi động / vừa tỉnh dậy sau khi bị sleep trên Render)
+            await self.wait_until_ready()
+
             print(f"Đang tìm audio cho truy vấn: {query}")
             guild = self.get_guild(int(guild_id))
             if guild is None:
