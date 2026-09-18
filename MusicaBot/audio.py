@@ -1,33 +1,30 @@
 import subprocess
 
-# Ruta del archivo de cookies
+# Đường dẫn file cookies
 COOKIES_PATH = "cookies.txt"
 
 def get_youtube_audio_url(video_url):
     try:
-        # Construir el comando yt-dlp para obtener la URL del stream de audio
+        # Xây dựng lệnh yt-dlp để lấy URL stream audio
         command = [
             "yt-dlp", "-g", "-f", "bestaudio[ext=m4a]/best",
             "--cookies", COOKIES_PATH, video_url
         ]
         
-        # Ejecutar el comando y capturar la salida
+        # Thực thi lệnh và bắt kết quả trả về
         result = subprocess.run(command, capture_output=True, text=True, check=True)
 
-        # Obtener la URL del audio
+        # Lấy URL audio
         audio_url = result.stdout.strip()
         
         if audio_url:
             return audio_url
         else:
-            print("No se encontró la URL del audio.")
+            print("Không tìm thấy URL audio.")
             return None
     except subprocess.CalledProcessError as e:
-        print(f"Error al ejecutar yt-dlp: {e}")
+        print(f"Lỗi khi chạy yt-dlp: {e}")
         return None
     except Exception as e:
-        print(f"Error inesperado: {e}")
+        print(f"Lỗi không xác định: {e}")
         return None
-
-
-
