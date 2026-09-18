@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 import uvicorn
 
-# Cargar variables de entorno desde el archivo .env
+# Nạp các biến môi trường từ file .env
 load_dotenv()
 
 app = FastAPI()
@@ -21,7 +21,7 @@ class MusicRequest(BaseModel):
 
 @app.on_event("startup")
 async def startup_event():
-    # Inicia el bot de Discord
+    # Khởi động bot Discord
     asyncio.create_task(music_bot.start_bot())
 
 @app.post("/play-music")
@@ -44,7 +44,5 @@ async def music_queue():
         raise HTTPException(status_code=400, detail=str(e))
 
 if __name__ == "__main__":
-    # Inicia la aplicación FastAPI
+    # Khởi động ứng dụng FastAPI
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-
